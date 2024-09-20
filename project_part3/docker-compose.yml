@@ -1,1 +1,26 @@
 # Your Solution
+version: '3'
+services:
+  book_catalog:
+    image: kuby2.azurecr.io/book_catalog:1.0
+    container_name: book_catalog
+    environment:
+      - DATABASE_URL=postgresql://megh_user:bbFMbnbvy7wpoJhOkDUpjaf0qwN8uEai@dpg-crmljilumphs739gmqbg-a.oregon-postgres.render.com/megh
+    ports:
+      - "9000:9000"
+    depends_on:
+      - inventory_management
+    restart: always
+
+  inventory_management:
+    image: kuby2.azurecr.io/inventory_management:1.0
+    container_name: inventory_management
+    environment:
+      - DATABASE_URL=postgresql://megh_user:bbFMbnbvy7wpoJhOkDUpjaf0qwN8uEai@dpg-crmljilumphs739gmqbg-a.oregon-postgres.render.com/megh
+    ports:
+      - "9001:9001"
+    depends_on:
+      - book_catalog
+    restart: always
+
+  # PostgreSQL is external; it is assumed to be Azure or Render
